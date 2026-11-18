@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EJJ MD standards entry metadata",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format_version",
+    "id",
+    "kind",
+    "category",
+    "severity",
+    "checks"
+  ],
+  "properties": {
+    "format_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "id": {
+      "$ref": "#/$defs/entryId"
+    },
+    "kind": {
+      "enum": [
+        "rule",
+        "principle"
+      ]
+    },
+    "category": {
+      "enum": [
+        "code-style",
+        "correctness-and-safety",
+        "architecture-and-design",
+        "testing-and-quality",
+        "security-and-dependencies"
+      ]
+    },
+    "severity": {
+      "enum": [
+        "must",
+        "should",
+        "consider"
+      ]
+    },
+    "checks": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/check"
+      }
+    },
+    "references": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/entryId"
+      }
+    }
+  },
+  "$defs": {
+    "entryId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*(\\.[a-z][a-z0-9-]*)+$",
+      "not": {
+        "pattern": "[^a-z0-9.-]"
+      }
+    },
+    "check": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "enforcement",
+        "effect",
+        "verifiability"
+      ],
+      "properties": {
+        "enforcement": {
+          "enum": [
+            "process",
+            "hook",
+            "ci",
+            "human-review"
+          ]
+        },
+        "effect": {
+          "enum": [
+            "blocking",
+            "advisory"
+          ]
+        },
+        "verifiability": {
+          "enum": [
+            "deterministic",
+            "ai-judgment",
+            "human-judgment"
+          ]
+        }
+      }
+    }
+  }
+}
